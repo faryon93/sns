@@ -26,16 +26,28 @@ import ()
 //  types
 // ---------------------------------------------------------------------------------------
 
+// Verdict is a common type, which indicates the status of a test.
+// https://docs.aws.amazon.com/ses/latest/DeveloperGuide/receiving-email-notifications-contents.html#receiving-email-notifications-contents-dkimverdict-object
 type Verdict struct {
-    Status string `json:"status"`
+	Status string `json:"status"`
 }
 
 // ---------------------------------------------------------------------------------------
-//  public functions
+//  public members
 // ---------------------------------------------------------------------------------------
 
 // IsOk returns true when the verdict is not in FAIL state.
 // GRAY, ord PROCESSING_FAILED counts as Ok as well.
 func (v *Verdict) IsOk() bool {
-    return v.Status != "FAIL"
+	return v.Status != "FAIL"
+}
+
+// HasPassed return true when the verdict state is PASS.
+func (v *Verdict) HasPassed() bool {
+	return v.Status == "PASS"
+}
+
+// String returns a string representation fo this Verdict.
+func (v *Verdict) String() string {
+	return v.Status
 }
